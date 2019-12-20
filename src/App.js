@@ -7,10 +7,10 @@ import DictaphoneState from "./context/dictaphone/DictaphoneState";
 const App = () => {
   return (
     <DictaphoneState>
-      <div className="App">
+      <div className="container text-center">
         <h1>Speech to Text converter</h1>
-        <Dictaphone browserSupportsSpeechReconigition />
         <Transcript />
+        <Dictaphone browserSupportsSpeechReconigition />
       </div>
     </DictaphoneState>
   );

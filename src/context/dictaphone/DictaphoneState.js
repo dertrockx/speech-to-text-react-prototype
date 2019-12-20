@@ -3,22 +3,27 @@ import DictaphoneContext from "./dictaphoneContext";
 import dictaphoneReducer from './dictaphoneReducer';
 import {
     CLEAR_TRANSCRIPT,
-    UPDATE_TRANSCRIPT
+    UPDATE_TRANSCRIPT,
+    START_LISTENING,
+    STOP_LISTENING
 } from '../types';
 
 
 const DictaphoneState = props => {
     const initialState = {
-        transcript: null
+        transcript: [],
+        listening: false
     }
 
     const [ state, dispatch ] = useReducer(dictaphoneReducer, initialState);
     
     const updateTranscript = text => {
-        dispatch({
-            type: UPDATE_TRANSCRIPT,
-            payload: text
-        })
+        if(text !== ""){
+            dispatch({
+                type: UPDATE_TRANSCRIPT,
+                payload: text
+            })
+        }
     }
 
     const clearTranscript = () => {
@@ -27,11 +32,17 @@ const DictaphoneState = props => {
         })
     }
 
+    const startListen = () => dispatch({ type: START_LISTENING });
+    const stopListen = () => dispatch({ type: STOP_LISTENING });
+
     return(
         <DictaphoneContext.Provider value={{
             transcript: state.transcript,
+            listening: state.listening,
             updateTranscript,
-            clearTranscript
+            clearTranscript,
+            startListen,
+            stopListen
         }}>
             { props.children }
         </DictaphoneContext.Provider>

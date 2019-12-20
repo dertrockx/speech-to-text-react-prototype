@@ -13,32 +13,52 @@ const Dictaphone = ({
     finalTranscript 
     }) => {
     const dictaphoneContext = useContext(DictaphoneContext);
-    const { updateTranscript, clearTranscript } = dictaphoneContext;
+    const { updateTranscript, clearTranscript, startListen, stopListen } = dictaphoneContext;
     useEffect( () => {
         updateTranscript(finalTranscript);
-        
+        resetTranscript();
+        // eslint-disable-next-line
     }, [finalTranscript]);
+
+    
+
     if(!browserSupportsSpeechReconigition) return (
         <div style={{ color: 'red' }}>
             Browser does not supports this
         </div>
     )
     const start = () => {
-        clearTranscript()
         startListening();
+        startListen();
     }
 
     const stop = () => {
         resetTranscript();
         stopListening();
+        stopListen();
+    }
+
+    const reset = () => {
         clearTranscript();
     }
 
     return(
         <div>
-            <button onClick={ resetTranscript }>Reset</button>
-            { listening ? <button onClick={stop}>Stop</button> : <button onClick={start}>Start</button> }
-            <p>{transcript} - {finalTranscript}</p>
+            {
+                listening ? (
+                    <div className="card bg-warning text-left">
+                        { transcript ? ( "Transcribing: " + transcript ) : "Please speak to the mic" }
+                    </div>
+                ) : (
+                    <div className="card text-left">Here, you can see what are being transcribed.</div>
+                )
+            }
+            { listening ? (
+                <button className="btn btn-danger btn-block" onClick={stop}>Stop</button>
+            ) : (
+                <button className="btn btn-success btn-block" onClick={start}>Start</button>
+            ) }
+            <button className="btn btn-info btn-block" onClick={ reset }>Reset</button>
         </div>
     )
 }
