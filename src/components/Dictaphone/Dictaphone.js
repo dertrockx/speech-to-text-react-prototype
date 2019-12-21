@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types'
 import SpeechRecognition from 'react-speech-recognition';
 import DictaphoneContext from "../../context/dictaphone/dictaphoneContext";
+import isChrome from "../../utils/checkIfChrome";
 
 const Dictaphone = ({ 
     transcript, 
@@ -41,9 +42,11 @@ const Dictaphone = ({
     const reset = () => {
         clearTranscript();
     }
-
-    return(
-        <div>
+    console.log(isChrome)
+    let content = null;
+    if(isChrome){
+        return(
+            <div>
             {
                 listening ? (
                     <div className="card bg-warning text-left">
@@ -60,7 +63,14 @@ const Dictaphone = ({
             ) }
             <button className="btn btn-info btn-block" onClick={ reset }>Reset</button>
         </div>
-    )
+        )
+    } else {
+        return(
+            <div className="card bg-danger">
+                <h1>Oops! This app only works on chrome. Please use the chrome browser.</h1>
+            </div>
+        )
+    }
 }
 
 Dictaphone.propTypes = {

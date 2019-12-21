@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, Fragment } from 'react'
 import DictaphoneContext from "../../context/dictaphone/dictaphoneContext";
 import "./transcript.css";
+import isChrome from "../../utils/checkIfChrome";
 
 const Transcript = () => {
     const dictaphoneContext = useContext(DictaphoneContext);
@@ -17,19 +18,25 @@ const Transcript = () => {
             <div className="card bg-danger">Mic is turned off. Please click start button first</div>
         )
     )
-    const scroll = () => end.scrollIntoView({ behavior: "smooth" });
+    const scroll = () => end !== null ? end.scrollIntoView({ behavior: "smooth" }) : null;
     useEffect( () => {
         scroll();
         // eslint-disable-next-line
     }, [transcript]);
     return (
-        <div className="text-left margin-y-2" id="transcript">
-            { content }
-            <div 
-                style={{ float: "left", clear: 'both' }}
-                ref={ (el) => { end=el } }
-            />
-        </div>
+        <Fragment>
+            { isChrome ? (
+                <div className="text-left margin-y-2" id="transcript">
+                    { content }
+                    <div 
+                        style={{ float: "left", clear: 'both' }}
+                        ref={ (el) => { end=el } }
+                    />
+                </div>
+            ) : (
+                <div></div>
+            )}
+        </Fragment>
     )
 }
 
